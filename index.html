@@ -12,31 +12,42 @@
 
         header { 
             height: 65px; background: #000; display: flex; align-items: center; 
-            justify-content: space-between; padding: 0 20px; border-bottom: 1px solid rgba(255,255,255,0.1);
+            justify-content: space-between; padding: 0 15px; border-bottom: 1px solid rgba(255,255,255,0.1);
             z-index: 1001;
         }
-        .brand { display: flex; align-items: center; gap: 12px; font-weight: 900; color: var(--accent); letter-spacing: 1px; }
-        .logo-svg { width: 30px; height: 30px; filter: drop-shadow(0 0 8px var(--accent)); }
+        .brand { display: flex; align-items: center; gap: 10px; font-weight: 900; color: var(--accent); letter-spacing: 1px; font-size: 0.9rem; }
+        .logo-svg { width: 24px; height: 24px; filter: drop-shadow(0 0 8px var(--accent)); }
         
-        .nav-btns { display: flex; gap: 10px; }
-        .btn-main { border: none; padding: 10px 18px; border-radius: 6px; font-weight: 800; cursor: pointer; font-size: 0.8rem; transition: 0.3s; }
-        .btn-more { background: linear-gradient(135deg, #00f2ff 0%, #0066ff 100%); color: white; box-shadow: 0 4px 15px var(--accent-glow); }
-        .btn-stations { background: #1a1a1a; color: white; border: 1px solid #333; }
+        .nav-btns { display: flex; gap: 8px; align-items: center; }
+        .btn-main { 
+            border: none; padding: 10px 14px; border-radius: 8px; font-weight: 800; 
+            cursor: pointer; font-size: 0.75rem; transition: 0.3s; display: flex; align-items: center; gap: 8px;
+        }
+        .btn-accent { background: linear-gradient(135deg, #00f2ff 0%, #0066ff 100%); color: white; box-shadow: 0 4px 15px var(--accent-glow); }
+        .btn-dark { background: #1a1a1a; color: white; border: 1px solid #333; }
+
+        /* Mobile specific hiding of text */
+        @media (max-width: 600px) {
+            .btn-text { display: none; }
+            .btn-main { padding: 10px; border-radius: 50%; width: 40px; height: 40px; justify-content: center; }
+            .brand span { display: none; }
+        }
 
         #main { display: flex; flex: 1; position: relative; overflow: hidden; }
         #theater { flex: 1; background: #000; position: relative; display: flex; flex-direction: column; }
         
         #now-playing-hud {
-            background: linear-gradient(to bottom, rgba(0,0,0,0.95) 0%, transparent 100%);
-            padding: 20px 25px; display: flex; align-items: center; gap: 15px; z-index: 10;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, transparent 100%);
+            padding: 15px 20px; display: flex; align-items: center; gap: 12px; z-index: 10;
         }
-        #hud-logo { height: 28px; width: auto; filter: drop-shadow(0 0 5px var(--accent)); }
-        #hud-title { font-size: 1.1rem; font-weight: 900; text-transform: uppercase; color: var(--accent); letter-spacing: 2px; }
+        #hud-logo { height: 24px; width: auto; filter: drop-shadow(0 0 5px var(--accent)); }
+        #hud-title { font-size: 0.9rem; font-weight: 900; text-transform: uppercase; color: var(--accent); letter-spacing: 1px; }
 
-        video { width: 100%; flex: 1; object-fit: contain; background: black; }
+        #player-container { position: relative; flex: 1; display: flex; align-items: center; justify-content: center; background: #000; overflow: hidden; }
+        video { width: 100%; height: 100%; object-fit: contain; }
 
         #sidebar { 
-            width: 350px; background: var(--panel); border-left: 1px solid rgba(255,255,255,0.1);
+            width: 320px; background: var(--panel); border-left: 1px solid rgba(255,255,255,0.1);
             display: flex; flex-direction: column; transition: transform 0.3s ease;
         }
         @media (max-width: 1024px) { 
@@ -50,25 +61,20 @@
             border-radius: 10px; background: rgba(255,255,255,0.02); cursor: pointer;
             border: 1px solid transparent; transition: 0.3s;
         }
-        .ch-card.active { border-color: var(--accent); background: rgba(0,242,255,0.12); box-shadow: 0 0 15px rgba(0,242,255,0.05); }
-        .ch-logo { width: 50px; height: 35px; object-fit: contain; margin-right: 15px; background: #000; border-radius: 4px; }
-        .ch-name { font-weight: 600; font-size: 0.9rem; }
+        .ch-card.active { border-color: var(--accent); background: rgba(0,242,255,0.12); }
+        .ch-logo { width: 45px; height: 32px; object-fit: contain; margin-right: 12px; background: #000; border-radius: 4px; }
+        .ch-name { font-weight: 600; font-size: 0.85rem; }
 
         .search-wrap { padding: 15px; border-bottom: 1px solid #222; }
-        #search { width: 100%; padding: 12px; background: #111; border: 1px solid #333; color: white; border-radius: 8px; outline: none; }
-
-        #utility-drawer { position: fixed; bottom: -100%; left: 0; width: 100%; background: var(--panel); border-top: 2px solid var(--accent); z-index: 2000; transition: 0.4s; padding: 25px; box-sizing: border-box; border-radius: 25px 25px 0 0; }
-        body.utility-open #utility-drawer { bottom: 0; }
-        .drawer-item { background: rgba(255,255,255,0.03); padding: 18px; border-radius: 12px; display: flex; align-items: center; gap: 15px; font-weight: 700; cursor: pointer; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.05); }
+        #search { width: 100%; padding: 12px; background: #111; border: 1px solid #333; color: white; border-radius: 8px; outline: none; box-sizing: border-box; }
 
         .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 3000; display: none; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(15px); }
-        .modal-content { background: #0a0a0a; width: 100%; max-width: 400px; padding: 30px; border-radius: 30px; border: 1px solid var(--accent); text-align: center; position: relative; }
+        .modal-content { background: #0a0a0a; width: 100%; max-width: 380px; padding: 30px; border-radius: 30px; border: 1px solid var(--accent); text-align: center; position: relative; }
         .close-btn { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; cursor: pointer; color: #666; }
-        #qr-box { background: white; padding: 15px; border-radius: 15px; display: inline-block; margin: 20px 0; }
-        #qr-box img { display: block; }
+        #qr-box { background: white; padding: 15px; border-radius: 15px; display: inline-block; margin: 20px 0; border: 5px solid var(--accent); }
     </style>
 </head>
-<body id="app">
+<body>
 
 <header>
     <div class="brand">
@@ -76,8 +82,15 @@
         <span>HUMBLE CABLETV</span>
     </div>
     <div class="nav-btns">
-        <button class="btn-main btn-more" onclick="toggleUtility()">OPTIONS</button>
-        <button class="btn-main btn-stations" onclick="toggleMenu()">STATIONS</button>
+        <button class="btn-main btn-dark" onclick="shuffle()">
+            <span>🔀</span><span class="btn-text">SHUFFLE</span>
+        </button>
+        <button class="btn-main btn-dark" onclick="openSync()">
+            <span>📲</span><span class="btn-text">SYNC</span>
+        </button>
+        <button class="btn-main btn-accent" onclick="toggleMenu()">
+            <span>📺</span><span class="btn-text">STATIONS</span>
+        </button>
     </div>
 </header>
 
@@ -85,32 +98,28 @@
     <div id="theater">
         <div id="now-playing-hud">
             <img id="hud-logo" src="" alt="">
-            <span id="hud-title">LOADING...</span>
+            <span id="hud-title">INITIALIZING...</span>
         </div>
-        <video id="player" controls autoplay playsinline></video>
+        <div id="player-container">
+            <video id="player" controls autoplay playsinline></video>
+        </div>
     </div>
 
     <div id="sidebar">
         <div class="search-wrap">
-            <input type="text" placeholder="Search for channels..." id="search" oninput="filterChannels()">
+            <input type="text" placeholder="Find a channel..." id="search" oninput="filterChannels()">
         </div>
         <div id="channel-list"></div>
     </div>
 </div>
 
-<div id="utility-drawer">
-    <div class="drawer-item" onclick="shuffle()">🔀 Random Channel</div>
-    <div class="drawer-item" onclick="openSync()">📲 Mobile Sync & Share</div>
-    <div class="drawer-item" style="color:var(--red);" onclick="toggleUtility()">✕ Close Menu</div>
-</div>
-
 <div id="sync-modal" class="modal">
     <div class="modal-content">
         <span class="close-btn" onclick="closeModals()">×</span>
-        <h2 style="color:var(--accent);">SYNC DEVICES</h2>
-        <p style="font-size:0.85rem; opacity:0.6;">Scan QR to continue watching on your mobile or share with friends.</p>
+        <h2 style="color:var(--accent); margin-bottom: 5px;">MOBILE SYNC</h2>
+        <p style="font-size:0.8rem; opacity:0.6;">Scan for Mobile / Tablet view</p>
         <div id="qr-box"></div>
-        <button class="btn-main btn-more" style="width:100%; padding:15px; border-radius:15px;" onclick="triggerNativeShare()">SHARE TO APPS</button>
+        <button class="btn-main btn-accent" style="width:100%; padding:15px; justify-content: center; border-radius:15px;" onclick="triggerNativeShare()">SHARE TO APPS</button>
     </div>
 </div>
 
@@ -615,115 +624,124 @@ https://fl1.moveonjoy.com/Z_LIVING/index.m3u8
     let currentIdx = 0;
     const player = document.getElementById('player');
     const hls = new Hls();
+    let lastTap = 0;
 
-    function init() {
-        const lines = m3uRaw.split('\n');
-        let currentItem = {};
+    function parseM3U(data) {
+        const lines = data.split('\n');
+        let channels = [];
+        let current = null;
         lines.forEach(line => {
             if (line.startsWith('#EXTINF:')) {
-                currentItem.name = line.split(',')[1]?.trim();
-                currentItem.logo = line.match(/tvg-logo="([^"]+)"/)?.[1];
-            } else if (line.startsWith('http')) {
-                currentItem.url = line.trim();
-                db.push(currentItem);
-                currentItem = {};
+                current = {
+                    name: line.split(',')[1]?.trim() || "Unknown",
+                    logo: line.match(/tvg-logo="([^"]+)"/)?.[1] || "",
+                };
+            } else if (line.startsWith('http') && current) {
+                current.url = line.trim();
+                channels.push(current);
+                current = null;
             }
         });
-        renderChannels(db);
-        
-        // RECALL LAST SESSION
-        const lastSession = localStorage.getItem('lastChannelIndex');
-        const startIdx = lastSession !== null ? parseInt(lastSession) : 0;
-        play(startIdx);
+        return channels;
     }
 
-    function renderChannels(list) {
-        const container = document.getElementById('channel-list');
-        container.innerHTML = "";
-        list.forEach((ch, i) => {
-            const card = document.createElement('div');
-            card.className = "ch-card";
-            card.id = `card-${i}`;
-            card.onclick = () => play(i);
-            card.innerHTML = `<img class="ch-logo" src="${ch.logo}"> <span class="ch-name">${ch.name}</span>`;
-            container.appendChild(card);
+    function init() {
+        db = parseM3U(m3uRaw);
+        renderList();
+        
+        // Instant Play & Remember State
+        const saved = localStorage.getItem('lastChIndex');
+        loadChannel(saved !== null ? parseInt(saved) : 0);
+
+        // Mobile Double Tap for Fullscreen logic
+        const pContainer = document.getElementById('player-container');
+        pContainer.addEventListener('touchend', (e) => {
+            const now = Date.now();
+            const timesince = now - lastTap;
+            if (timesince < 300 && timesince > 0) {
+                toggleFullScreen();
+                e.preventDefault();
+            }
+            lastTap = now;
         });
     }
 
-    function play(index) {
+    function renderList() {
+        const list = document.getElementById('channel-list');
+        list.innerHTML = db.map((ch, i) => `
+            <div class="ch-card ${i === currentIdx ? 'active' : ''}" onclick="loadChannel(${i})">
+                <img class="ch-logo" src="${ch.logo}" onerror="this.src='https://via.placeholder.com/50x35?text=TV'">
+                <div class="ch-name">${ch.name}</div>
+            </div>
+        `).join('');
+    }
+
+    function loadChannel(index) {
         currentIdx = index;
-        const station = db[index];
-        if(!station) return;
-
-        // Save State
-        localStorage.setItem('lastChannelIndex', index);
-
-        // Update HUD
-        document.getElementById('hud-logo').src = station.logo;
-        document.getElementById('hud-title').innerText = station.name;
-
-        // Highlight Active
-        document.querySelectorAll('.ch-card').forEach(c => c.classList.remove('active'));
-        const activeCard = document.getElementById(`card-${index}`);
-        if(activeCard) activeCard.classList.add('active');
+        const channel = db[index];
+        document.getElementById('hud-title').innerText = channel.name;
+        document.getElementById('hud-logo').src = channel.logo;
+        localStorage.setItem('lastChIndex', index);
 
         if (Hls.isSupported()) {
-            hls.loadSource(station.url);
+            hls.loadSource(channel.url);
             hls.attachMedia(player);
+            hls.on(Hls.Events.MANIFEST_PARSED, () => player.play());
         } else if (player.canPlayType('application/vnd.apple.mpegurl')) {
-            player.src = station.url;
+            player.src = channel.url;
+            player.play();
         }
-        
-        if (window.innerWidth <= 1024) document.body.classList.remove('menu-open');
+        renderList();
+        document.body.classList.remove('menu-open');
+    }
+
+    function toggleFullScreen() {
+        const container = document.getElementById('player-container');
+        if (!document.fullscreenElement) {
+            if (container.requestFullscreen) container.requestFullscreen();
+            else if (container.webkitRequestFullscreen) container.webkitRequestFullscreen();
+        } else {
+            if (document.exitFullscreen) document.exitFullscreen();
+        }
     }
 
     function filterChannels() {
-        const query = document.getElementById('search').value.toLowerCase();
-        const cards = document.querySelectorAll('.ch-card');
-        cards.forEach(card => {
-            const name = card.querySelector('.ch-name').innerText.toLowerCase();
-            card.style.display = name.includes(query) ? 'flex' : 'none';
+        const q = document.getElementById('search').value.toLowerCase();
+        document.querySelectorAll('.ch-card').forEach(card => {
+            card.style.display = card.innerText.toLowerCase().includes(q) ? 'flex' : 'none';
         });
+    }
+
+    function shuffle() {
+        loadChannel(Math.floor(Math.random() * db.length));
     }
 
     function openSync() {
-        document.getElementById('qr-box').innerHTML = "";
-        new QRCode(document.getElementById("qr-box"), {
-            text: window.location.href,
-            width: 180,
-            height: 180,
-            colorDark: "#000000",
-            colorLight: "#ffffff"
-        });
+        const qrBox = document.getElementById('qr-box');
+        qrBox.innerHTML = "";
+        new QRCode(qrBox, { text: window.location.href, width: 180, height: 180 });
         document.getElementById('sync-modal').style.display = 'flex';
-        toggleUtility();
     }
 
     async function triggerNativeShare() {
-        const shareData = {
-            title: 'Humble CableTv',
-            text: `Watching ${db[currentIdx].name} on Humble CableTv! Join me.`,
-            url: window.location.href
-        };
-
         try {
             if (navigator.share) {
-                await navigator.share(shareData);
+                await navigator.share({
+                    title: 'Humble CableTv',
+                    text: `Watch ${db[currentIdx].name} live!`,
+                    url: window.location.href
+                });
             } else {
                 navigator.clipboard.writeText(window.location.href);
-                alert("Link copied to clipboard!");
+                alert("Link copied!");
             }
-        } catch (err) {
-            console.log("Share failed", err);
-        }
+        } catch (err) { console.log(err); }
     }
 
     function toggleMenu() { document.body.classList.toggle('menu-open'); }
-    function toggleUtility() { document.body.classList.toggle('utility-open'); }
     function closeModals() { document.querySelectorAll('.modal').forEach(m => m.style.display = 'none'); }
-    function shuffle() { play(Math.floor(Math.random() * db.length)); toggleUtility(); }
 
-    init();
+    window.onload = init;
 </script>
 </body>
 </html>
