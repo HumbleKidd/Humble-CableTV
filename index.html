@@ -15,21 +15,21 @@
             justify-content: space-between; padding: 0 15px; border-bottom: 1px solid rgba(255,255,255,0.1);
             z-index: 1001;
         }
-        .brand { display: flex; align-items: center; gap: 10px; font-weight: 900; color: var(--accent); letter-spacing: 1px; font-size: 0.9rem; }
-        .logo-svg { width: 24px; height: 24px; filter: drop-shadow(0 0 8px var(--accent)); }
+        .brand { display: flex; align-items: center; gap: 10px; font-weight: 900; color: var(--accent); letter-spacing: 1px; }
+        .logo-svg { width: 26px; height: 26px; filter: drop-shadow(0 0 8px var(--accent)); }
         
         .nav-btns { display: flex; gap: 8px; align-items: center; }
         .btn-main { 
-            border: none; padding: 10px 14px; border-radius: 8px; font-weight: 800; 
+            border: none; padding: 10px 15px; border-radius: 8px; font-weight: 800; 
             cursor: pointer; font-size: 0.75rem; transition: 0.3s; display: flex; align-items: center; gap: 8px;
+            background: #1a1a1a; color: white; border: 1px solid #333;
         }
-        .btn-accent { background: linear-gradient(135deg, #00f2ff 0%, #0066ff 100%); color: white; box-shadow: 0 4px 15px var(--accent-glow); }
-        .btn-dark { background: #1a1a1a; color: white; border: 1px solid #333; }
+        .btn-accent { background: linear-gradient(135deg, #00f2ff 0%, #0066ff 100%); border: none; box-shadow: 0 4px 15px var(--accent-glow); }
 
-        /* Mobile specific hiding of text */
-        @media (max-width: 600px) {
+        /* Mobile Icon Mode */
+        @media (max-width: 650px) {
             .btn-text { display: none; }
-            .btn-main { padding: 10px; border-radius: 50%; width: 40px; height: 40px; justify-content: center; }
+            .btn-main { width: 42px; height: 42px; padding: 0; justify-content: center; border-radius: 50%; font-size: 1.1rem; }
             .brand span { display: none; }
         }
 
@@ -37,13 +37,13 @@
         #theater { flex: 1; background: #000; position: relative; display: flex; flex-direction: column; }
         
         #now-playing-hud {
-            background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, transparent 100%);
+            background: linear-gradient(to bottom, rgba(0,0,0,0.95) 0%, transparent 100%);
             padding: 15px 20px; display: flex; align-items: center; gap: 12px; z-index: 10;
         }
         #hud-logo { height: 24px; width: auto; filter: drop-shadow(0 0 5px var(--accent)); }
-        #hud-title { font-size: 0.9rem; font-weight: 900; text-transform: uppercase; color: var(--accent); letter-spacing: 1px; }
+        #hud-title { font-size: 0.95rem; font-weight: 900; text-transform: uppercase; color: var(--accent); letter-spacing: 1px; }
 
-        #player-container { position: relative; flex: 1; display: flex; align-items: center; justify-content: center; background: #000; overflow: hidden; }
+        #player-container { position: relative; flex: 1; background: #000; display: flex; align-items: center; justify-content: center; }
         video { width: 100%; height: 100%; object-fit: contain; }
 
         #sidebar { 
@@ -58,23 +58,21 @@
         #channel-list { flex: 1; overflow-y: auto; padding: 15px; }
         .ch-card { 
             display: flex; align-items: center; padding: 12px; margin-bottom: 8px; 
-            border-radius: 10px; background: rgba(255,255,255,0.02); cursor: pointer;
-            border: 1px solid transparent; transition: 0.3s;
+            border-radius: 10px; background: rgba(255,255,255,0.02); cursor: pointer; transition: 0.2s;
         }
-        .ch-card.active { border-color: var(--accent); background: rgba(0,242,255,0.12); }
-        .ch-logo { width: 45px; height: 32px; object-fit: contain; margin-right: 12px; background: #000; border-radius: 4px; }
+        .ch-card.active { background: rgba(0,242,255,0.1); border-left: 4px solid var(--accent); }
+        .ch-logo { width: 40px; height: 30px; object-fit: contain; margin-right: 12px; border-radius: 3px; }
         .ch-name { font-weight: 600; font-size: 0.85rem; }
 
         .search-wrap { padding: 15px; border-bottom: 1px solid #222; }
         #search { width: 100%; padding: 12px; background: #111; border: 1px solid #333; color: white; border-radius: 8px; outline: none; box-sizing: border-box; }
 
-        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 3000; display: none; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(15px); }
-        .modal-content { background: #0a0a0a; width: 100%; max-width: 380px; padding: 30px; border-radius: 30px; border: 1px solid var(--accent); text-align: center; position: relative; }
-        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; cursor: pointer; color: #666; }
-        #qr-box { background: white; padding: 15px; border-radius: 15px; display: inline-block; margin: 20px 0; border: 5px solid var(--accent); }
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 3000; display: none; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(10px); }
+        .modal-content { background: #0a0a0a; width: 100%; max-width: 350px; padding: 30px; border-radius: 25px; border: 1px solid var(--accent); text-align: center; position: relative; }
+        #qr-box { background: white; padding: 10px; border-radius: 10px; display: inline-block; margin: 15px 0; }
     </style>
 </head>
-<body>
+<body id="app">
 
 <header>
     <div class="brand">
@@ -82,10 +80,10 @@
         <span>HUMBLE CABLETV</span>
     </div>
     <div class="nav-btns">
-        <button class="btn-main btn-dark" onclick="shuffle()">
+        <button class="btn-main" onclick="shuffle()">
             <span>🔀</span><span class="btn-text">SHUFFLE</span>
         </button>
-        <button class="btn-main btn-dark" onclick="openSync()">
+        <button class="btn-main" onclick="openSync()">
             <span>📲</span><span class="btn-text">SYNC</span>
         </button>
         <button class="btn-main btn-accent" onclick="toggleMenu()">
@@ -98,7 +96,7 @@
     <div id="theater">
         <div id="now-playing-hud">
             <img id="hud-logo" src="" alt="">
-            <span id="hud-title">INITIALIZING...</span>
+            <span id="hud-title">LOADING STREAM...</span>
         </div>
         <div id="player-container">
             <video id="player" controls autoplay playsinline></video>
@@ -107,7 +105,7 @@
 
     <div id="sidebar">
         <div class="search-wrap">
-            <input type="text" placeholder="Find a channel..." id="search" oninput="filterChannels()">
+            <input type="text" placeholder="Search channels..." id="search" oninput="filterChannels()">
         </div>
         <div id="channel-list"></div>
     </div>
@@ -115,11 +113,10 @@
 
 <div id="sync-modal" class="modal">
     <div class="modal-content">
-        <span class="close-btn" onclick="closeModals()">×</span>
-        <h2 style="color:var(--accent); margin-bottom: 5px;">MOBILE SYNC</h2>
-        <p style="font-size:0.8rem; opacity:0.6;">Scan for Mobile / Tablet view</p>
+        <h3 style="color:var(--accent); margin-top:0;">SHARE & SYNC</h3>
         <div id="qr-box"></div>
-        <button class="btn-main btn-accent" style="width:100%; padding:15px; justify-content: center; border-radius:15px;" onclick="triggerNativeShare()">SHARE TO APPS</button>
+        <button class="btn-main btn-accent" style="width:100%; justify-content:center; margin-top:10px;" onclick="triggerNativeShare()">SHARE TO APPS</button>
+        <p onclick="closeModals()" style="cursor:pointer; margin-top:20px; font-size:0.8rem; opacity:0.5;">CLOSE</p>
     </div>
 </div>
 
@@ -648,46 +645,44 @@ https://fl1.moveonjoy.com/Z_LIVING/index.m3u8
     function init() {
         db = parseM3U(m3uRaw);
         renderList();
-        
-        // Instant Play & Remember State
         const saved = localStorage.getItem('lastChIndex');
         loadChannel(saved !== null ? parseInt(saved) : 0);
 
-        // Mobile Double Tap for Fullscreen logic
-        const pContainer = document.getElementById('player-container');
-        pContainer.addEventListener('touchend', (e) => {
+        // Double Tap Fullscreen for Mobile
+        const container = document.getElementById('player-container');
+        container.addEventListener('touchend', (e) => {
             const now = Date.now();
-            const timesince = now - lastTap;
-            if (timesince < 300 && timesince > 0) {
-                toggleFullScreen();
+            if (now - lastTap < 300) {
+                if (!document.fullscreenElement) container.requestFullscreen();
+                else document.exitFullscreen();
                 e.preventDefault();
             }
             lastTap = now;
         });
     }
 
-    function renderList() {
-        const list = document.getElementById('channel-list');
-        list.innerHTML = db.map((ch, i) => `
-            <div class="ch-card ${i === currentIdx ? 'active' : ''}" onclick="loadChannel(${i})">
-                <img class="ch-logo" src="${ch.logo}" onerror="this.src='https://via.placeholder.com/50x35?text=TV'">
-                <div class="ch-name">${ch.name}</div>
-            </div>
-        `).join('');
-    }
-
     function loadChannel(index) {
         currentIdx = index;
         const channel = db[index];
+        localStorage.setItem('lastChIndex', index);
+        
         document.getElementById('hud-title').innerText = channel.name;
         document.getElementById('hud-logo').src = channel.logo;
-        localStorage.setItem('lastChIndex', index);
 
         if (Hls.isSupported()) {
             hls.loadSource(channel.url);
             hls.attachMedia(player);
-            hls.on(Hls.Events.MANIFEST_PARSED, () => player.play());
-        } else if (player.canPlayType('application/vnd.apple.mpegurl')) {
+            hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                const playPromise = player.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(() => {
+                        // If blocked, start muted and immediately unmute on first body click
+                        player.muted = true;
+                        player.play();
+                    });
+                }
+            });
+        } else {
             player.src = channel.url;
             player.play();
         }
@@ -695,51 +690,44 @@ https://fl1.moveonjoy.com/Z_LIVING/index.m3u8
         document.body.classList.remove('menu-open');
     }
 
-    function toggleFullScreen() {
-        const container = document.getElementById('player-container');
-        if (!document.fullscreenElement) {
-            if (container.requestFullscreen) container.requestFullscreen();
-            else if (container.webkitRequestFullscreen) container.webkitRequestFullscreen();
-        } else {
-            if (document.exitFullscreen) document.exitFullscreen();
+    // Force sound as soon as user touches anything on the page
+    document.body.addEventListener('click', () => {
+        if (player.muted) {
+            player.muted = false;
         }
+    }, { once: true });
+
+    function renderList() {
+        const list = document.getElementById('channel-list');
+        list.innerHTML = db.map((ch, i) => `
+            <div class="ch-card ${i === currentIdx ? 'active' : ''}" onclick="loadChannel(${i})">
+                <img class="ch-logo" src="${ch.logo}">
+                <div class="ch-name">${ch.name}</div>
+            </div>
+        `).join('');
     }
 
+    function shuffle() { loadChannel(Math.floor(Math.random() * db.length)); }
+    
+    function openSync() {
+        const qrBox = document.getElementById('qr-box');
+        qrBox.innerHTML = "";
+        new QRCode(qrBox, { text: window.location.href, width: 160, height: 160 });
+        document.getElementById('sync-modal').style.display = 'flex';
+    }
+
+    async function triggerNativeShare() {
+        if (navigator.share) await navigator.share({ title: 'Humble CableTv', url: window.location.href });
+    }
+
+    function toggleMenu() { document.body.classList.toggle('menu-open'); }
+    function closeModals() { document.querySelectorAll('.modal').forEach(m => m.style.display = 'none'); }
     function filterChannels() {
         const q = document.getElementById('search').value.toLowerCase();
         document.querySelectorAll('.ch-card').forEach(card => {
             card.style.display = card.innerText.toLowerCase().includes(q) ? 'flex' : 'none';
         });
     }
-
-    function shuffle() {
-        loadChannel(Math.floor(Math.random() * db.length));
-    }
-
-    function openSync() {
-        const qrBox = document.getElementById('qr-box');
-        qrBox.innerHTML = "";
-        new QRCode(qrBox, { text: window.location.href, width: 180, height: 180 });
-        document.getElementById('sync-modal').style.display = 'flex';
-    }
-
-    async function triggerNativeShare() {
-        try {
-            if (navigator.share) {
-                await navigator.share({
-                    title: 'Humble CableTv',
-                    text: `Watch ${db[currentIdx].name} live!`,
-                    url: window.location.href
-                });
-            } else {
-                navigator.clipboard.writeText(window.location.href);
-                alert("Link copied!");
-            }
-        } catch (err) { console.log(err); }
-    }
-
-    function toggleMenu() { document.body.classList.toggle('menu-open'); }
-    function closeModals() { document.querySelectorAll('.modal').forEach(m => m.style.display = 'none'); }
 
     window.onload = init;
 </script>
