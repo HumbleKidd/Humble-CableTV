@@ -3,95 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Humble CableTv | Instant Pro</title>
+    <title>Humble CableTv | Pro Edition</title>
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
-        :root { --accent: #00f2ff; --accent-glow: rgba(0, 242, 255, 0.5); --bg: #000; --panel: rgba(10, 10, 15, 0.98); }
+        :root { --accent: #00f2ff; --accent-glow: rgba(0, 242, 255, 0.5); --bg: #050508; --panel: rgba(10, 10, 15, 0.98); --red: #ff4757; }
         body { margin: 0; background: var(--bg); color: white; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
 
         header { 
-            height: 60px; background: #000; display: flex; align-items: center; 
-            justify-content: space-between; padding: 0 15px; border-bottom: 1px solid rgba(255,255,255,0.05);
+            height: 65px; background: #000; display: flex; align-items: center; 
+            justify-content: space-between; padding: 0 15px; border-bottom: 1px solid rgba(255,255,255,0.1);
             z-index: 1001;
         }
         .brand { display: flex; align-items: center; gap: 10px; font-weight: 900; color: var(--accent); letter-spacing: 1px; }
-        .logo-svg { width: 24px; height: 24px; filter: drop-shadow(0 0 8px var(--accent)); }
+        .logo-svg { width: 26px; height: 26px; filter: drop-shadow(0 0 8px var(--accent)); }
         
-        .nav-btns { display: flex; gap: 8px; }
+        .nav-btns { display: flex; gap: 8px; align-items: center; }
         .btn-main { 
-            border: none; padding: 8px 12px; border-radius: 6px; font-weight: 800; 
-            cursor: pointer; font-size: 0.7rem; transition: 0.2s; display: flex; align-items: center; gap: 6px;
-            background: #111; color: white; border: 1px solid #222;
+            border: none; padding: 10px 15px; border-radius: 8px; font-weight: 800; 
+            cursor: pointer; font-size: 0.75rem; transition: 0.3s; display: flex; align-items: center; gap: 8px;
+            background: #1a1a1a; color: white; border: 1px solid #333;
         }
-        .btn-accent { background: var(--accent); color: #000; border: none; font-weight: 900; }
-        .btn-main svg { width: 18px; height: 18px; }
+        .btn-accent { background: linear-gradient(135deg, #00f2ff 0%, #0066ff 100%); border: none; box-shadow: 0 4px 15px var(--accent-glow); }
 
         @media (max-width: 650px) {
             .btn-text { display: none; }
-            .btn-main { width: 42px; height: 42px; padding: 0; justify-content: center; border-radius: 50%; }
+            .btn-main { width: 44px; height: 44px; padding: 0; justify-content: center; border-radius: 50%; font-size: 1.2rem; }
             .brand span { display: none; }
         }
 
         #main { display: flex; flex: 1; position: relative; overflow: hidden; }
-        #theater { flex: 1; background: #000; position: relative; display: flex; align-items: center; justify-content: center; }
+        #theater { flex: 1; background: #000; position: relative; display: flex; flex-direction: column; }
         
         #now-playing-hud {
-            position: absolute; top: 10px; left: 10px;
-            padding: 8px 12px; display: flex; align-items: center; gap: 10px; z-index: 10;
-            pointer-events: none; text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+            background: linear-gradient(to bottom, rgba(0,0,0,0.95) 0%, transparent 100%);
+            padding: 15px 20px; display: flex; align-items: center; gap: 12px; z-index: 10;
         }
-        #hud-logo { height: 20px; width: auto; border-radius: 2px; }
-        #hud-title { font-size: 0.8rem; font-weight: 800; color: #fff; opacity: 0.9; text-transform: uppercase; }
+        #hud-logo { height: 24px; width: auto; filter: drop-shadow(0 0 5px var(--accent)); }
+        #hud-title { font-size: 0.95rem; font-weight: 900; text-transform: uppercase; color: var(--accent); letter-spacing: 1px; }
 
-        video { width: 100%; height: 100%; object-fit: contain; background: #000; }
+        #player-container { position: relative; flex: 1; background: #000; display: flex; align-items: center; justify-content: center; }
+        video { width: 100%; height: 100%; object-fit: contain; cursor: pointer; }
 
         #sidebar { 
             width: 320px; background: var(--panel); border-left: 1px solid rgba(255,255,255,0.1);
-            display: flex; flex-direction: column; transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 1500;
+            display: flex; flex-direction: column; transition: transform 0.3s ease;
         }
         @media (max-width: 1024px) { 
-            #sidebar { position: absolute; right: 0; height: 100%; transform: translateX(100%); width: 85%; } 
+            #sidebar { position: absolute; right: 0; height: 100%; transform: translateX(100%); z-index: 1500; width: 85%; } 
             body.menu-open #sidebar { transform: translateX(0); }
         }
         
-        #channel-list { flex: 1; overflow-y: auto; padding: 10px; }
+        #channel-list { flex: 1; overflow-y: auto; padding: 15px; }
         .ch-card { 
-            display: flex; align-items: center; padding: 10px; margin-bottom: 5px; 
-            border-radius: 8px; background: rgba(255,255,255,0.03); cursor: pointer;
+            display: flex; align-items: center; padding: 12px; margin-bottom: 8px; 
+            border-radius: 10px; background: rgba(255,255,255,0.02); cursor: pointer; transition: 0.2s;
         }
-        .ch-card.active { background: rgba(0,242,255,0.15); border-left: 3px solid var(--accent); }
-        .ch-logo { width: 35px; height: 25px; object-fit: contain; margin-right: 10px; }
-        .ch-name { font-weight: 600; font-size: 0.8rem; }
+        .ch-card.active { background: rgba(0,242,255,0.1); border-left: 4px solid var(--accent); }
+        .ch-logo { width: 40px; height: 30px; object-fit: contain; margin-right: 12px; border-radius: 3px; }
+        .ch-name { font-weight: 600; font-size: 0.85rem; }
 
-        .search-wrap { padding: 12px; border-bottom: 1px solid #111; }
-        #search { width: 100%; padding: 10px; background: #050505; border: 1px solid #222; color: white; border-radius: 6px; outline: none; box-sizing: border-box; }
+        .search-wrap { padding: 15px; border-bottom: 1px solid #222; }
+        #search { width: 100%; padding: 12px; background: #111; border: 1px solid #333; color: white; border-radius: 8px; outline: none; box-sizing: border-box; }
 
-        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 3000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(15px); }
-        .modal-content { background: #000; width: 280px; padding: 25px; border-radius: 20px; border: 1px solid #333; text-align: center; }
-        #qr-box { background: white; padding: 8px; border-radius: 8px; display: inline-block; margin: 15px 0; }
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 3000; display: none; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(10px); }
+        .modal-content { background: #0a0a0a; width: 100%; max-width: 350px; padding: 30px; border-radius: 25px; border: 1px solid var(--accent); text-align: center; position: relative; }
+        #qr-box { background: white; padding: 10px; border-radius: 10px; display: inline-block; margin: 15px 0; }
     </style>
 </head>
 <body id="app">
 
 <header>
     <div class="brand">
-        <svg class="logo-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect><polyline points="17 2 12 7 7 2"></polyline></svg>
+        <svg class="logo-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect><polyline points="17 2 12 7 7 2"></polyline><circle cx="12" cy="14" r="2"></circle></svg>
         <span>HUMBLE CABLETV</span>
     </div>
     <div class="nav-btns">
         <button class="btn-main" onclick="shuffle()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"></polyline><line x1="4" y1="20" x2="21" y2="3"></line><polyline points="21 16 21 21 16 21"></polyline><line x1="15" y1="15" x2="21" y2="21"></line><line x1="4" y1="4" x2="9" y2="9"></line></svg>
-            <span class="btn-text">SHUFFLE</span>
+            <span>🔀</span><span class="btn-text">SHUFFLE</span>
         </button>
         <button class="btn-main" onclick="openSync()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-            <span class="btn-text">SYNC</span>
+            <span>📡</span><span class="btn-text">SYNC</span>
         </button>
         <button class="btn-main btn-accent" onclick="toggleMenu()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-            <span class="btn-text">STATIONS</span>
+            <span>📺</span><span class="btn-text">STATIONS</span>
         </button>
     </div>
 </header>
@@ -99,28 +94,33 @@
 <div id="main">
     <div id="theater">
         <div id="now-playing-hud">
-            <img id="hud-logo" src="" style="display:none">
-            <span id="hud-title"></span>
+            <img id="hud-logo" src="" alt="">
+            <span id="hud-title">SELECT A CHANNEL</span>
         </div>
-        <video id="player" autoplay playsinline crossorigin="anonymous"></video>
+        <div id="player-container">
+            <video id="player" controls autoplay playsinline></video>
+        </div>
     </div>
 
     <div id="sidebar">
-        <div class="search-wrap"><input type="text" placeholder="Quick Search..." id="search" oninput="filterChannels()"></div>
+        <div class="search-wrap">
+            <input type="text" placeholder="Search channels..." id="search" oninput="filterChannels()">
+        </div>
         <div id="channel-list"></div>
     </div>
 </div>
 
 <div id="sync-modal" class="modal">
     <div class="modal-content">
-        <h3 style="color:var(--accent); margin-top:0;">SYNC DEVICE</h3>
+        <h3 style="color:var(--accent); margin-top:0;">SHARE & SYNC</h3>
         <div id="qr-box"></div>
-        <button class="btn-main btn-accent" style="width:100%; justify-content:center;" onclick="triggerNativeShare()">SHARE LINK</button>
-        <p onclick="closeModals()" style="cursor:pointer; margin-top:15px; font-size:0.7rem; opacity:0.5;">DISMISS</p>
+        <button class="btn-main btn-accent" style="width:100%; justify-content:center; margin-top:10px;" onclick="triggerNativeShare()">SHARE TO APPS</button>
+        <p onclick="closeModals()" style="cursor:pointer; margin-top:20px; font-size:0.8rem; opacity:0.5;">CLOSE</p>
     </div>
 </div>
 
 <script>
+    // FULL M3U PLAYLIST PERSISTED
     const m3uRaw = `
 #EXTM3U
 #EXTINF:-1 tvg-id="TVJ.jm" tvg-name="TVJ Jamaica" tvg-logo="https://i.imgur.com/R4PoC3L.png" group-title="general",TVJ
@@ -622,49 +622,58 @@ https://fl1.moveonjoy.com/Z_LIVING/index.m3u8
     const player = document.getElementById('player');
     const hls = new Hls({ capLevelToPlayerSize: true, lowLatencyMode: true });
 
+    // MOBILE TOUCH LOGIC: DOUBLE-TAP FULLSCREEN & SINGLE-TAP CONTROLS
+    let lastTap = 0;
+    player.addEventListener('touchend', (e) => {
+        const currentTime = new Date().getTime();
+        const tapLength = currentTime - lastTap;
+        if (tapLength < 300 && tapLength > 0) {
+            // DOUBLE TAP DETECTED
+            if (player.requestFullscreen) player.requestFullscreen();
+            else if (player.webkitRequestFullscreen) player.webkitRequestFullscreen();
+            e.preventDefault();
+        } else {
+            // SINGLE TAP DETECTED - ENSURE CONTROLS ARE VISIBLE
+            player.controls = true;
+        }
+        lastTap = currentTime;
+    });
+
     function parseM3U(data) {
         const lines = data.split('\n');
         let current = null;
         lines.forEach(line => {
             if (line.startsWith('#EXTINF')) {
-                const name = line.split(',')[1];
-                const logo = line.match(/tvg-logo="([^"]+)"/)?.[1] || '';
-                current = { name, logo };
+                const nameMatch = line.split(',')[1];
+                const logoMatch = line.match(/tvg-logo="([^"]+)"/)?.[1];
+                current = { name: nameMatch, logo: logoMatch };
             } else if (line.startsWith('http') && current) {
                 current.url = line.trim();
                 db.push(current);
                 current = null;
             }
         });
-        renderList();
         
-        // MEMORY CHECK: Load last played or default to 0
-        const lastSaved = localStorage.getItem('lastChannelIdx');
-        loadChannel(lastSaved !== null ? parseInt(lastSaved) : 0);
+        const lastSaved = localStorage.getItem('tv_last_channel');
+        const startIdx = lastSaved !== null ? parseInt(lastSaved) : 0;
+        loadChannel(startIdx);
+        renderList();
     }
 
     function loadChannel(i) {
         currentIdx = i;
         const ch = db[i];
-        
-        // Save to LocalStorage instantly
-        localStorage.setItem('lastChannelIdx', i);
+        if (!ch) return;
 
-        // Instant HUD Update
-        const logoImg = document.getElementById('hud-logo');
-        logoImg.src = ch.logo;
-        logoImg.style.display = ch.logo ? 'block' : 'none';
+        localStorage.setItem('tv_last_channel', i);
+        document.getElementById('hud-logo').src = ch.logo;
         document.getElementById('hud-title').innerText = ch.name;
-
-        // Auto-Hide Menu Instantly
         document.body.classList.remove('menu-open');
 
         if (Hls.isSupported()) {
             hls.loadSource(ch.url);
             hls.attachMedia(player);
-            hls.on(Hls.Events.MANIFEST_PARSED, () => {
-                player.play().catch(() => { player.muted = true; player.play(); });
-            });
+            hls.on(Hls.Events.MANIFEST_PARSED, () => { player.play(); });
         } else if (player.canPlayType('application/vnd.apple.mpegurl')) {
             player.src = ch.url;
             player.play();
@@ -674,31 +683,31 @@ https://fl1.moveonjoy.com/Z_LIVING/index.m3u8
 
     function renderList() {
         const list = document.getElementById('channel-list');
-        const q = document.getElementById('search').value.toLowerCase();
-        list.innerHTML = db.map((ch, i) => {
-            if (q && !ch.name.toLowerCase().includes(q)) return '';
-            return `
-                <div class="ch-card ${i === currentIdx ? 'active' : ''}" onclick="loadChannel(${i})">
-                    <img class="ch-logo" src="${ch.logo}">
-                    <div class="ch-name">${ch.name}</div>
-                </div>
-            `;
-        }).join('');
+        list.innerHTML = db.map((ch, i) => `
+            <div class="ch-card ${i === currentIdx ? 'active' : ''}" onclick="loadChannel(${i})">
+                <img class="ch-logo" src="${ch.logo}">
+                <div class="ch-name">${ch.name}</div>
+            </div>
+        `).join('');
     }
 
     function shuffle() { loadChannel(Math.floor(Math.random() * db.length)); }
-    function toggleMenu() { document.body.classList.toggle('menu-open'); }
-    function filterChannels() { renderList(); }
     function openSync() {
-        new QRCode(document.getElementById('qr-box'), { text: window.location.href, width: 140, height: 140 });
+        const qrBox = document.getElementById('qr-box');
+        qrBox.innerHTML = "";
+        new QRCode(qrBox, { text: window.location.href, width: 160, height: 160 });
         document.getElementById('sync-modal').style.display = 'flex';
-    }
-    function closeModals() { 
-        document.querySelectorAll('.modal').forEach(m => m.style.display = 'none'); 
-        document.getElementById('qr-box').innerHTML = "";
     }
     async function triggerNativeShare() {
         if (navigator.share) await navigator.share({ title: 'Humble CableTv', url: window.location.href });
+    }
+    function toggleMenu() { document.body.classList.toggle('menu-open'); }
+    function closeModals() { document.querySelectorAll('.modal').forEach(m => m.style.display = 'none'); }
+    function filterChannels() {
+        const q = document.getElementById('search').value.toLowerCase();
+        document.querySelectorAll('.ch-card').forEach((card, idx) => {
+            card.style.display = db[idx].name.toLowerCase().includes(q) ? 'flex' : 'none';
+        });
     }
 
     parseM3U(m3uRaw);
